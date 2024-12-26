@@ -91,11 +91,11 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 
 ## Trade-offs Between Methods
 
-| Method                | Efficiency | Space  | Accuracy   | Scalability    | Ease of Implementation |
-|-----------------------|------------|--------|------------|----------------|------------------------|
-| Backtracking          | Low        | Low    | Exact      | Limited        | High                   |
-| Dynamic Programming  | Medium     | High   | Exact      | Moderate        | Medium                  |
-| Greedy                | High       | Low    | Approximate| High           | High                   |
+| Method                | Efficiency | Space  | Accuracy   | Scalability    |
+|-----------------------|------------|--------|------------|----------------|
+| Backtracking          | Low        | Low    | Exact      | Limited        |
+| Dynamic Programming  | Medium     | High   | Exact      | Moderate        |
+| Greedy                | High       | Low    | Approximate| High           |
 
 - **Backtracking** offers an exact solution but is not scalable for large datasets.
 - **Dynamic Programming** balances efficiency and accuracy, making it suitable for medium-sized datasets.
