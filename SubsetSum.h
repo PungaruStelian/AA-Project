@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Compare function for ascending order.
  */
@@ -31,5 +35,9 @@ bool subset_sum_dp(int *arr, int n, int T, int *solution, int *solution_size);
  * Space: O(N).
  */
 bool subset_sum_greedy(int *arr, int n, int T, int *solution, int *solution_size);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // SUBSETSUM_H
