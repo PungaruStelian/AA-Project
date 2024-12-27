@@ -1,2 +1,1 @@
-4
-0 1 5 7
+No solution was found!

@@ -1,2 +1,1 @@
-7
-1 3 4 5 8 10 12
+No solution was found!

@@ -20,8 +20,9 @@ int descending(const void *a, const void *b);
 bool subset_sum_backtracking(int *arr, int n, int T, int index, int *solution, int *solution_size);
 
 /**
- * Average time complexity: O(N * T).
- * Space: O(T).
+ * Approximate the sum of all elements with N * T
+ * Average time complexity: O(T * N^2).
+ * Space: O(T * N).
  */
 bool subset_sum_dp(int *arr, int n, int T, int *solution, int *solution_size);
 

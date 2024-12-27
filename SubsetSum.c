@@ -170,6 +170,7 @@ bool subset_sum_greedy(int *arr, int N, int T, int *solution, int *solution_size
             solution[*solution_size] = pairs[i].index;
             (*solution_size)++;
             current_sum = new_sum;
+            // check if the sum is close enough to the target, within 10% of the target
             if (llabs(current_sum - T) <= abs(T) / 10)
                 return true;
         }

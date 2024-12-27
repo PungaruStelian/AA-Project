@@ -17,11 +17,13 @@ The **Backtracking** method explores all possible combinations of elements from 
 
 #### **Advantages**
 - Finds all possible solutions, guaranteeing a correct solution if one exists.
-- Simple to implement and intuitive.
+- If the solution contains as many numbers as possible at the beginning of the vector, then this method is faster
+- The algorithm is not influenced by the size of the element values ​​or the sum
 
 #### **Disadvantages**
 - **Inefficient** for large datasets due to exponential complexity (O(2^N)).
 - Execution time increases significantly with larger datasets.
+- If the solution contains as many numbers as possible at the end of the vector, then this method becomes very inefficient
 
 #### **Use Cases**
 - Suitable for small to medium-sized datasets.
@@ -51,16 +53,16 @@ The **Dynamic Programming** method utilizes a memoization approach to avoid unne
    After populating the DP table, check if the target sum `T` is achievable by verifying `dp[T + offset]`. If achievable, reconstruct the solution by tracing back the elements that contributed to the target sum.
 
 #### **Advantages**
-- **Efficient for Large Datasets**: Can handle larger input sizes compared to backtracking, with a time complexity of `O(N*T)` where `N` is the number of elements and `T` is the target sum.
-- **Handles Negative Numbers**: By using an offset, the method effectively manages both positive and negative numbers within the same DP table.
-- **Guaranteed Correctness**: Ensures a correct solution if one exists.
+- Can handle larger input sizes compared to backtracking, with a time complexity of `O(T * N^2)` where `N` is the number of elements and `T` is the target sum.
+- Ensures a correct solution if one exists.
+- If the solution contains as many numbers as possible at the beginning of the vector, then this method is faster
 
 #### **Disadvantages**
-- **High Memory Consumption**: Requires significant memory proportional to the range of possible sums, which can be impractical for very large or highly negative/positive sums.
-- **Limited to Small to Moderate `T` Values**: For very large target sums, the memory requirements become prohibitive.
+- Requires significant memory and time proportional to the range of possible sums and elements, which can be impractical for very large or highly negative/positive sums.
+- If the solution contains as many numbers as possible at the end of the vector, then this method becomes less efficient
 
 #### **Use Cases**
-- Suitable for moderate-sized datasets where the target sum `T` is within a manageable range.
+- Suitable for moderate-sized datasets where the target sum `T` and element values is within a manageable range.
 - Particularly effective when the dataset includes both positive and negative numbers, utilizing the offset technique to account for the entire sum range.
 
 ### 3. Greedy
@@ -75,15 +77,16 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 2. **Selection**:  
    Traverse the sorted elements and add those that help in approaching the target sum **T**.
 3. **Termination Criterion**:  
-   Stop if the current sum is sufficiently close to **T** (e.g., the difference is within 20% of **T**).
+   Stop if the current sum is sufficiently close to **T** (e.g., the difference is within 10% of **T**).
 
 #### **Advantages**
-- **Fast**: Generally has a lower time complexity of `O(N log N)` due to sorting.
-- **Simple to Implement**: Easy to understand and apply.
+- Generally has a lower time complexity of `O(N log N)` due to sorting.
+- Fast and efficient for large datasets, especially when an approximate solution is acceptable.
 
 #### **Disadvantages**
-- **Does Not Guarantee Optimal Solution**: May fail to find a solution even if one exists.
-- **Depends on Element Order**: Performance can vary significantly based on the order of sorted elements and the distribution of values.
+- May fail to find a solution even if one exists.
+- May not provide an exact solution, as it aims to approximate the target sum.
+- May not provide the best approximation to the target sum, if the best solution contains more than one element
 
 #### **Use Cases**
 - Useful in scenarios where a quick approximate solution is acceptable and speed is a priority.
