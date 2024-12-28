@@ -2,6 +2,10 @@
 
 This project implements three different methods for solving the **Subset Sum** problem: **Backtracking**, **Dynamic Programming (DP)**, and **Greedy**. Each method has distinct characteristics in terms of efficiency, complexity, and the specific cases where it performs optimally or suboptimally.
 
+## Note
+
+First 6 test are for the correctnes of the 3 methods and have references to the correct answers; the other tests are for benchmark
+
 ## Resolution Methods
 
 ### 1. Backtracking

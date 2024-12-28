@@ -54,11 +54,10 @@ static void BM_Greedy(benchmark::State& state) {
     int solution_size;
 
     for(auto _ : state) {
-        double usage = measureMemoryDiff([&](){
-            solution_size = 0;
-            subset_sum_greedy(arr.data(), N, T, solution.data(), &solution_size);
-        });
-        state.counters["MemMB"] = usage;
+        benchmark::current_state = &state;
+        solution_size = 0;
+        subset_sum_greedy(arr.data(), N, T, solution.data(), &solution_size);
+        benchmark::current_state = nullptr;
     }
 }
 BENCHMARK(BM_Greedy)->DenseRange(7, 20);

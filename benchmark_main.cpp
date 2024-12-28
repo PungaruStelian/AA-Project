@@ -35,7 +35,7 @@ static double measurePeakMemory(const std::function<void()>& f) {
     f();
     double after = getPeakMemoryMB();
     resetPeakMemory();
-    return std::max(0.0, after - before);
+    return std::abs(after - before);
 }
 
 namespace benchmark {

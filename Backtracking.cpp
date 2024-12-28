@@ -56,11 +56,10 @@ static void BM_Backtracking(benchmark::State& state) {
     int solution_size = 0;
 
     for(auto _ : state) {
-        double usage = measureMemoryDiff([&](){
-            solution_size = 0;
-            subset_sum_backtracking(arr.data(), N, T, 0, solution.data(), &solution_size);
-        });
-        state.counters["MemMB"] = usage;
+        benchmark::current_state = &state;
+        solution_size = 0;
+        subset_sum_backtracking(arr.data(), N, T, 0, solution.data(), &solution_size);
+        benchmark::current_state = nullptr;
     }
 }
 BENCHMARK(BM_Backtracking)->DenseRange(7, 20);

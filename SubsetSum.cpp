@@ -18,6 +18,16 @@ int descending(const void *a, const void *b)
 
 bool subset_sum_backtracking(int *arr, int N, int T, int index, int *solution, int *solution_size)
 {
+    // Calculate memory usage for recursion stack
+    size_t mem_needed = N * (sizeof(int) + sizeof(bool));
+    benchmark::DoNotOptimize(mem_needed);
+
+    // Record memory usage in MB if benchmarking
+    if (benchmark::current_state) {
+        double memory_mb = mem_needed / (1024.0 * 1024.0);
+        benchmark::current_state->counters["MemMB"] = memory_mb;
+    }
+    
     if (T == 0)
     {
         return true;
@@ -134,13 +144,22 @@ bool subset_sum_dp(int *arr, int N, int T, int *solution, int *solution_size)
     return true;
 }
 
+typedef struct {
+    int index;
+    int value;
+} Pair;
+
 bool subset_sum_greedy(int *arr, int N, int T, int *solution, int *solution_size)
 {
-    typedef struct
-    {
-        int index;
-        int value;
-    } Pair;
+    // Calculate memory for pairs array
+    size_t mem_needed = N * sizeof(Pair);  // Remove 'struct' keyword
+    benchmark::DoNotOptimize(mem_needed);
+
+    // Record memory usage in MB if benchmarking
+    if (benchmark::current_state) {
+        double memory_mb = mem_needed / (1024.0 * 1024.0);
+        benchmark::current_state->counters["MemMB"] = memory_mb;
+    }
 
     std::vector<Pair> pairs(N);
     for (int i = 0; i < N; i++)
