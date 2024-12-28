@@ -58,19 +58,23 @@ bool subset_sum_dp(int *arr, int N, int T, int *solution, int *solution_size)
     long long offset = total_sum;
     long long table_size = 2 * total_sum + 1;
 
+    // Calculate total memory needed
+    size_t mem_needed = (table_size * sizeof(bool)) + (table_size * sizeof(int));
+    benchmark::DoNotOptimize(mem_needed);  // Prevent optimization
+
     bool *dp = (bool *)malloc(table_size * sizeof(bool));
-    if (dp == NULL)
-    {
-        std::cout << "Eroare la alocarea memoriei pentru dp.\n";
+    int *parent = (int *)malloc(table_size * sizeof(int));
+    
+    if (dp == NULL || parent == NULL) {
+        if (dp) free(dp);
+        if (parent) free(parent);
         return false;
     }
 
-    int *parent = (int *)malloc(table_size * sizeof(int));
-    if (parent == NULL)
-    {
-        std::cout << "Eroare la alocarea memoriei pentru parent.\n";
-        free(dp);
-        return false;
+    // Record memory usage in MB
+    double memory_mb = mem_needed / (1024.0 * 1024.0);
+    if (benchmark::current_state) {
+        benchmark::current_state->counters["MemMB"] = memory_mb;
     }
 
     for (long long i = 0; i < table_size; i++)

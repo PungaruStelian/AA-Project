@@ -4,34 +4,43 @@
 #include "SubsetSum.h"
 #include "benchmark/benchmark.h"
 #include <fstream> // Added to include ifstream
+#include <functional>
 
-/*
-int main() {
-    int N, T;
-    std::cin >> N >> T;
-
-    std::vector<int> arr(N);
-    for (int i = 0; i < N; i++) {
-        std::cin >> arr[i];
-    }
-
-    std::vector<int> solution(N);
-    int solution_size = 0;
-
-    if (subset_sum_greedy(arr.data(), N, T, solution.data(), &solution_size))
-    {
-        std::sort(solution.begin(), solution.begin() + solution_size); // Sortare implicită
-        std::cout << solution_size << "\n";
-        for (int i = 0; i < solution_size; i++)
-            std::cout << solution[i] << " ";
-        std::cout << "\n";
-    }
-    else
-        std::cout << "No solution was found!\n";
-
-    return 0;
+#ifdef _WIN32
+#include <windows.h>
+#include <psapi.h>
+static double getMemoryMB() {
+    PROCESS_MEMORY_COUNTERS pmc;
+    GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc));
+    return pmc.WorkingSetSize / (1024.0 * 1024.0);
 }
-*/
+#else
+#include <unistd.h>
+#include <fstream>
+#include <malloc.h>
+static double getMemoryMB() {
+    std::ifstream infile("/proc/self/statm");
+    if (!infile) return 0.0;
+    long pages;
+    infile >> pages;
+    long pageSize = sysconf(_SC_PAGE_SIZE);
+    return (pages * pageSize) / (1024.0 * 1024.0);
+}
+#endif
+
+static double measureMemoryDiff(const std::function<void()>& f) {
+    double before = getMemoryMB();
+    f();
+#ifdef __linux__
+    malloc_trim(0);
+#endif
+#ifdef _WIN32
+    HANDLE hProcess = GetCurrentProcess();
+    SetProcessWorkingSetSize(hProcess, (SIZE_T)-1, (SIZE_T)-1);
+#endif
+    double after = getMemoryMB();
+    return (after > before) ? (after - before) : 0.0;
+}
 
 static void BM_Greedy(benchmark::State& state) {
     // Read input from a test file
@@ -45,8 +54,11 @@ static void BM_Greedy(benchmark::State& state) {
     int solution_size;
 
     for(auto _ : state) {
-        solution_size = 0; // Initialize solution_size before each call
-        subset_sum_greedy(arr.data(), N, T, solution.data(), &solution_size);
+        double usage = measureMemoryDiff([&](){
+            solution_size = 0;
+            subset_sum_greedy(arr.data(), N, T, solution.data(), &solution_size);
+        });
+        state.counters["MemMB"] = usage;
     }
 }
 BENCHMARK(BM_Greedy)->DenseRange(7, 20);

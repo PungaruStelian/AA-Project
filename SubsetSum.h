@@ -2,6 +2,12 @@
 #define SUBSETSUM_H
 
 #include <stdbool.h>
+#include "benchmark/benchmark.h"
+
+// Declare namespace and extern variable before extern "C"
+namespace benchmark {
+    extern benchmark::State* current_state;
+}
 
 #ifdef __cplusplus
 extern "C" {
