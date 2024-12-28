@@ -125,6 +125,28 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 - **Dynamic Programming**: Adapts by adjusting the offset, but an unbalanced distribution can impact memory efficiency.
 - **Greedy**: Efficiency depends on sorting and how elements contribute to approaching **T**.
 
+## Performance
+
+The performance of the three methods has been measured and analyzed across different input sizes (N). Below are the graphical representations of the execution time and memory usage comparisons.
+
+### Execution Time Comparison
+
+![Time Comparison](time_comparison.png)
+
+This graph shows the execution time (in seconds) for each method as N increases. Note the logarithmic scale on the y-axis, which helps visualize the significant differences between the methods:
+- Backtracking shows exponential growth in execution time
+- Dynamic Programming shows more moderate growth
+- Greedy maintains relatively constant performance
+
+### Memory Usage Comparison
+
+![Memory Comparison](memory_comparison.png)
+
+This graph shows the memory consumption (in MB) for each method as N increases:
+- Dynamic Programming typically uses the most memory due to its table storage requirements
+- Backtracking shows moderate memory usage due to recursion stack
+- Greedy maintains the lowest and most consistent memory usage
+
 ## Conclusion
 
 Choosing the right method for solving the **Subset Sum** problem depends on the specific characteristics of the dataset and application requirements. For small sets requiring exact solutions, **Backtracking** is ideal. For medium-sized sets balancing efficiency and precision, **Dynamic Programming** is recommended. For large sets where speed is essential and an approximate solution is acceptable, the **Greedy** method provides a suitable trade-off.
