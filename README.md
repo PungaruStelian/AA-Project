@@ -127,25 +127,57 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 
 ## Performance
 
-The performance of the three methods has been measured and analyzed across different input sizes (N). Below are the graphical representations of the execution time and memory usage comparisons.
+### Execution Time
 
-### Execution Time Comparison
+#### Trio (Tests 7-26)
 
-![Time Comparison](time_comparison.png)
+The **Trio** range evaluates the **Backtracking**, **Dynamic Programming (DP)**, and **Greedy** methods. The execution time graph for this range illustrates that:
+- **Backtracking** exhibits an exponential increase in execution time as **N** grows, highlighting its computational complexity.
+- **Dynamic Programming** shows a moderate increase in execution time with larger inputs, balancing efficiency and performance.
+- **Greedy** maintains a consistently low execution time regardless of **N**, demonstrating its high efficiency.
 
-This graph shows the execution time (in seconds) for each method as N increases. Note the logarithmic scale on the y-axis, which helps visualize the significant differences between the methods:
-- Backtracking shows exponential growth in execution time
-- Dynamic Programming shows more moderate growth
-- Greedy maintains relatively constant performance
+![Trio Execution Time](./trio_time_comparison.png)
 
-### Memory Usage Comparison
+#### Duo (Tests 27-34)
 
-![Memory Comparison](memory_comparison.png)
+The **Duo** range assesses the **DP** and **Greedy** methods. The execution time graph indicates that:
+- **Dynamic Programming** continues to display a gradual increase in execution time with larger datasets.
+- **Greedy** remains highly efficient with minimal execution time, reinforcing its scalability for larger problem sizes.
 
-This graph shows the memory consumption (in MB) for each method as N increases:
-- Dynamic Programming typically uses the most memory due to its table storage requirements
-- Backtracking shows moderate memory usage due to recursion stack
-- Greedy maintains the lowest and most consistent memory usage
+![Duo Execution Time](./duo_time_comparison.png)
+
+#### Solo (Tests 35-53)
+
+In the **Solo** range, only the **Greedy** method is analyzed. The execution time graph confirms that:
+- **Greedy** consistently performs with rapid execution times, even as **N** reaches higher values, solidifying its suitability for large-scale problems.
+
+![Solo Execution Time](./solo_time_comparison.png)
+
+### Memory Usage
+
+#### Trio (Tests 7-26)
+
+The memory usage graph for the **Trio** range demonstrates that:
+- **Backtracking** consumes relatively low memory despite its exponential time complexity.
+- **Dynamic Programming** requires significantly more memory to manage the DP table, especially as **N** increases.
+- **Greedy** utilizes minimal memory, aligning with its efficient execution time performance.
+
+![Trio Memory Usage](./trio_memory_comparison.png)
+
+#### Duo (Tests 27-34)
+
+For the **Duo** range, the memory usage graph shows that:
+- **Dynamic Programming**'s memory consumption continues to rise with larger inputs, though it remains within manageable limits.
+- **Greedy** sustains its low memory footprint, unaffected by the scale of **N**.
+
+![Duo Memory Usage](./duo_memory_comparison.png)
+
+#### Solo (Tests 35-53)
+
+In the **Solo** range, the memory usage graph confirms that:
+- **Greedy** consistently uses minimal memory resources, ensuring scalability and efficient memory management for extensive datasets.
+
+![Solo Memory Usage](./solo_memory_comparison.png)
 
 ## Conclusion
 

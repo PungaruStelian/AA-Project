@@ -61,4 +61,4 @@ static void BM_DP(benchmark::State& state) {
         benchmark::current_state = nullptr;
     }
 }
-BENCHMARK(BM_DP)->DenseRange(7, 32);
+BENCHMARK(BM_DP)->DenseRange(7, 35);

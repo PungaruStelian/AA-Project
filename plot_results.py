@@ -36,68 +36,96 @@ def plot_metrics(csv_file):
                     time_ms = float(row['Time(ms)'])
                     memory_mb = float(row['Memory(MB)'])
                     
-                    data[N][algo] = {
+                    # Modify the data mapping to use test_num instead of N
+                    data[test_num][algo] = {
+                        'N': N,
                         'time': time_ms / 1000,  # Convert to seconds
                         'memory': memory_mb
                     }
-                    print(f"Added data point: N={N}, algo={algo}, time={time_ms}ms, memory={memory_mb}MB")
+                    print(f"Added data point: Test={test_num}, algo={algo}, N={N}, time={time_ms}ms, memory={memory_mb}MB")
 
         if not data:
             print("No data was loaded!")
             return
 
-        # Sort by N values
-        N_values = sorted(data.keys())
-        print(f"\nFound N values: {N_values}")
-        
-        algorithms = ['Backtracking', 'DP', 'Greedy']
-        colors = ['red', 'blue', 'green']
-        markers = ['o', 's', '^']
-        
-        # Create time plot
-        plt.figure(figsize=(12, 6))
-        for algo, color, marker in zip(algorithms, colors, markers):
-            times = []
-            ns = []
-            for n in N_values:
-                if algo in data[n] and data[n][algo]['time'] is not None:
-                    ns.append(n)
-                    times.append(data[n][algo]['time'])
-            if times:
-                plt.plot(ns, times, marker=marker, label=algo, color=color, linewidth=2, markersize=8)
-        
-        plt.xlabel('N (number of elements)', fontsize=12)
-        plt.ylabel('Execution time (seconds)', fontsize=12)
-        plt.title('Execution Time Comparison', fontsize=14)
-        plt.legend(fontsize=10)
-        plt.grid(True)
-        plt.yscale('log')
-        plt.tight_layout()
-        plt.savefig('time_comparison.png', dpi=300, bbox_inches='tight')
-        print("\nSaved time plot to time_comparison.png")
-        plt.close()
+        # Define test ranges based on test numbers
+        ranges = {
+            'Trio': range(7, 27),
+            'Duo': range(27, 35),
+            'Solo': range(35, 54)
+        }
 
-        # Create memory plot
-        plt.figure(figsize=(12, 6))
-        for algo, color, marker in zip(algorithms, colors, markers):
-            memory = []
-            ns = []
-            for n in N_values:
-                if algo in data[n] and data[n][algo]['memory'] is not None:
-                    ns.append(n)
-                    memory.append(data[n][algo]['memory'])
-            if memory:
-                plt.plot(ns, memory, marker=marker, label=algo, color=color, linewidth=2, markersize=8)
-        
-        plt.xlabel('N (number of elements)', fontsize=12)
-        plt.ylabel('Memory usage (MB)', fontsize=12)
-        plt.title('Memory Usage Comparison', fontsize=14)
-        plt.legend(fontsize=10)
-        plt.grid(True)
-        plt.tight_layout()
-        plt.savefig('memory_comparison.png', dpi=300, bbox_inches='tight')
-        print("Saved memory plot to memory_comparison.png")
-        plt.close()
+        # Define which algorithms to include per range
+        algo_inclusion = {
+            'Trio': ['Backtracking', 'DP', 'Greedy'],
+            'Duo': ['DP', 'Greedy'],
+            'Solo': ['Greedy']
+        }
+
+        # Define colors and markers
+        colors = {'Backtracking': 'red', 'DP': 'blue', 'Greedy': 'green'}
+        markers = {'Backtracking': 'o', 'DP': 's', 'Greedy': '^'}
+
+        for range_name, test_range in ranges.items():
+            # Collect data for current range based on test_num
+            current_data = defaultdict(dict)
+            for test_num in test_range:
+                if test_num in data:
+                    for algo in algo_inclusion[range_name]:
+                        if algo in data[test_num]:
+                            current_data[test_num][algo] = data[test_num][algo]
+            
+            if not current_data:
+                print(f"No data available for {range_name}. Skipping plots.")
+                continue
+
+            # Prepare lists for plotting
+            plot_algos = algo_inclusion[range_name]
+            plot_colors = [colors[algo] for algo in plot_algos]
+            plot_markers = [markers[algo] for algo in plot_algos]
+
+            # Create Execution Time Comparison Plot
+            plt.figure(figsize=(12, 6))
+            for algo, color, marker in zip(plot_algos, plot_colors, plot_markers):
+                ns = []
+                times = []
+                for test_num in sorted(current_data.keys()):
+                    if algo in current_data[test_num]:
+                        ns.append(current_data[test_num][algo]['N'])
+                        times.append(current_data[test_num][algo]['time'])
+                if times:
+                    plt.plot(ns, times, marker=marker, label=algo, color=color, linewidth=2, markersize=8)
+            plt.xlabel('N (number of elements)', fontsize=12)
+            plt.ylabel('Execution Time (seconds)', fontsize=12)
+            plt.title(f'Execution Time Comparison: {range_name}', fontsize=14)
+            plt.legend(fontsize=10)
+            plt.grid(True)
+            plt.yscale('log')
+            plt.tight_layout()
+            plt.savefig(f'{range_name.lower()}_time_comparison.png', dpi=300, bbox_inches='tight')
+            print(f"Saved execution time plot to {range_name.lower()}_time_comparison.png")
+            plt.close()
+
+            # Create Memory Usage Comparison Plot
+            plt.figure(figsize=(12, 6))
+            for algo, color, marker in zip(plot_algos, plot_colors, plot_markers):
+                ns = []
+                memories = []
+                for test_num in sorted(current_data.keys()):
+                    if algo in current_data[test_num]:
+                        ns.append(current_data[test_num][algo]['N'])
+                        memories.append(current_data[test_num][algo]['memory'])
+                if memories:
+                    plt.plot(ns, memories, marker=marker, label=algo, color=color, linewidth=2, markersize=8)
+            plt.xlabel('N (number of elements)', fontsize=12)
+            plt.ylabel('Memory Usage (MB)', fontsize=12)
+            plt.title(f'Memory Usage Comparison: {range_name}', fontsize=14)
+            plt.legend(fontsize=10)
+            plt.grid(True)
+            plt.tight_layout()
+            plt.savefig(f'{range_name.lower()}_memory_comparison.png', dpi=300, bbox_inches='tight')
+            print(f"Saved memory usage plot to {range_name.lower()}_memory_comparison.png")
+            plt.close()
 
     except Exception as e:
         print(f"Error occurred: {str(e)}")
