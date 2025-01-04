@@ -60,4 +60,4 @@ static void BM_Greedy(benchmark::State& state) {
         benchmark::current_state = nullptr;
     }
 }
-BENCHMARK(BM_Greedy)->DenseRange(7, 20);
+BENCHMARK(BM_Greedy)->DenseRange(7, 50);

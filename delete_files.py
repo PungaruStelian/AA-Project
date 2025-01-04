@@ -11,4 +11,4 @@ def delete_test_files(start, end):
             print(f"File not found: {file_path}")
 
 if __name__ == "__main__":
-    delete_test_files(21, 47)
+    delete_test_files(27, 72)

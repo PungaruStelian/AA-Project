@@ -62,4 +62,4 @@ static void BM_Backtracking(benchmark::State& state) {
         benchmark::current_state = nullptr;
     }
 }
-BENCHMARK(BM_Backtracking)->DenseRange(7, 20);
+BENCHMARK(BM_Backtracking)->DenseRange(7, 26);
