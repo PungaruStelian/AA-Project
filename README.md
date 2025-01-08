@@ -1,4 +1,30 @@
-# Subset Sum Problem - Resolution Methods
+# Subset Sum Problem
+
+## Problem Statement
+
+Let be a set consisting of `𝑁` objects. Each object `𝑖` has an associated integer value `𝑣𝑖`. Identify a subset of objects such that the sum of their values ​​is exactly `𝑇`.
+
+**Input data format**
+
+On the first line are two numbers, `𝑁` and `𝑇`.
+On the next `𝑁` lines there will be an integer `𝑣𝑖`,
+signifying the value of each object.
+
+**Output data format**
+
+On the first line is the number of objects chosen from the crowd.
+On the second line there will be indexes of the selected objects.
+If there are multiple solutions, any can be displayed.
+
+**Restrictions:**
+
+1 <= 𝑁 <= 10000
+
+1 <= 𝑇 <= 1000000
+
+-1000000 <= 𝑣𝑖 <= 1000000
+
+## Solution
 
 This project implements three different methods for solving the **Subset Sum** problem: **Backtracking**, **Dynamic Programming (DP)**, and **Greedy**. Each method has distinct characteristics in terms of efficiency, complexity, and the specific cases where it performs optimally or suboptimally.
 
@@ -23,11 +49,14 @@ The **Backtracking** method explores all possible combinations of elements from 
 - Finds all possible solutions, guaranteeing a correct solution if one exists.
 - If the solution contains as many numbers as possible at the beginning of the vector, then this method is faster
 - The algorithm is not influenced by the size of the element values ​​or the sum
+- Managing negative numbers does not significantly affect the method, though it increases the search space.
+- Not significantly affected by the distribution of positive or negative values.
 
 #### **Disadvantages**
-- **Inefficient** for large datasets due to exponential complexity (O(2^N)).
+- **Inefficient** for large datasets due to exponential complexity (`O(2^N)`).
 - Execution time increases significantly with larger datasets.
 - If the solution contains as many numbers as possible at the end of the vector, then this method becomes very inefficient
+- As the input data are random numbers, the larger the input size, the more dependent on luck and respectively variable over time this method becomes
 
 #### **Use Cases**
 - Suitable for small to medium-sized datasets.
@@ -64,6 +93,8 @@ The **Dynamic Programming** method utilizes a memoization approach to avoid unne
 #### **Disadvantages**
 - Requires significant memory and time proportional to the range of possible sums and elements, which can be impractical for very large or highly negative/positive sums.
 - If the solution contains as many numbers as possible at the end of the vector, then this method becomes less efficient
+- Requires adjusting the offset to handle negative sums, which can increase memory consumption.
+- Works well with both unique and duplicate elements, though performance may vary based on element repetition.
 
 #### **Use Cases**
 - Suitable for moderate-sized datasets where the target sum `T` and element values is within a manageable range.
@@ -91,6 +122,7 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 - May fail to find a solution even if one exists.
 - May not provide an exact solution, as it aims to approximate the target sum.
 - May not provide the best approximation to the target sum, if the best solution contains more than one element
+- May struggle with negative numbers since the selection rule can be compromised.
 
 #### **Use Cases**
 - Useful in scenarios where a quick approximate solution is acceptable and speed is a priority.
@@ -108,22 +140,27 @@ The **Greedy** method selects elements from the set based on a specific rule (ty
 - **Dynamic Programming** balances efficiency and accuracy, making it suitable for medium-sized datasets.
 - **Greedy** is very fast and scalable but sacrifices solution precision.
 
-## Handling Special Input Data
+## How to Run
 
-### Negative Numbers
-- **Backtracking**: Managing negative numbers does not significantly affect the method, though it increases the search space.
-- **Dynamic Programming**: Requires adjusting the offset to handle negative sums, which can increase memory consumption.
-- **Greedy**: May struggle with negative numbers since the selection rule can be compromised.
+>python3 generate_tests.py
+>
+>g++ -std=c++11 -isystem benchmark/include     -Ibenchmark/include     DP.cpp SubsetSum.cpp Greedy.cpp Backtracking.cpp benchmark_main.cpp     -Lbenchmark/build/src -lbenchmark -lpthread -o SubsetSumBenchmarks
+>
+>./SubsetSumBenchmarks
+>
+>python3 plot_results.py
 
-### Sets with Unique vs. Duplicate Elements
-- **Backtracking**: Can handle both uniformly, but execution time grows linearly with the number of elements.
-- **Dynamic Programming**: Works well with both unique and duplicate elements, though performance may vary based on element repetition.
-- **Greedy**: Performance can vary significantly depending on the distribution and sorting of element values.
+## My hardware configuration
 
-### Sets with Predominantly Positive or Negative Elements
-- **Backtracking**: Not significantly affected by the distribution of positive or negative values.
-- **Dynamic Programming**: Adapts by adjusting the offset, but an unbalanced distribution can impact memory efficiency.
-- **Greedy**: Efficiency depends on sorting and how elements contribute to approaching **T**.
+- **Operating Systems**: 
+1. Windows 11 Pro, 64-bit
+2. Ubuntu 22.04.5, LTS 5.15.167.4-microsoft-standard-WSL2, x86-64
+- **Processor**: 13th Gen Intel Core i7-13650HX
+- **RAM Memory**: 16 GB
+- **Graphics Card**: NVIDIA GeForce RTX 4050 Laptop GPU
+## Tests
+
+Each test is build with the size of the vector, the sum and size of each number being a balanced value, for unbalanced cases we documented the reaction of the previous methods
 
 ## Performance
 
